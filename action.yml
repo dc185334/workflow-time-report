@@ -17,6 +17,7 @@ runs:
       run: |
         data=$(bash report.sh ${{ github.repository }})
         data="${data//$'\n'/\\n}""
+        data="${data//$'\\\`'/\\\`}"
         data="${data//'%'/'%25'}"
         data="${data//$'\n'/'%0A'}"
         data="${data//$'\r'/'%0D'}"
