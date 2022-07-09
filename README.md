@@ -1,5 +1,7 @@
 # Workflow Time Report
 
+Repository の Workflows 別
+
 ## Usage
 
 ```yaml
