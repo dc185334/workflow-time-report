@@ -16,7 +16,7 @@ runs:
       shell: bash
       run: |
         data=$(bash report.sh ${{ github.repository }})
-        echo "::set-output name=stdout::${data//$'\n'/'%0A'}"
+        echo "::set-output name=stdout::$data"
       env:
         GH_TOKEN: ${{ github.token }}
 
