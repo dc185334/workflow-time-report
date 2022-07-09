@@ -1,0 +1,12 @@
+name: Workflow Time Report
+
+on:
+  push
+
+jobs:
+  reporting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v3
+      - uses: MichinaoShimizu/workflow-time-report@main

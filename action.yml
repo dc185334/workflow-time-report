@@ -1,0 +1,30 @@
+name: Workflow Time Report
+decription: Workflow Time Report
+runs:
+  using: composite
+  steps:
+    - name: Get current time
+      id: current_time
+      shell: bash
+      run: echo "::set-output name=stdout::$(date '+%Y-%m-%d %H:%M:%S')"
+      env:
+        TZ: Asia/Tokyo
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Create markdown
+      id: markdown
+      shell: bash
+      run: |
+        table=$(bash report.sh)
+        table="${table//'%'/'%25'}"
+        table="${table//$'\n'/'%0A'}"
+        table="${table//$'\r'/'%0D'}"
+        echo "::set-output name=stdout::$table"
+
+    - name: Create report
+      shell: bash
+      run: |
+        body="${{ steps.markdown.outputs.stdout }}"
+        gh issue create -R ${{ github.repository }} --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
+      env:
+        GH_TOKEN: ${{ github.token }}
