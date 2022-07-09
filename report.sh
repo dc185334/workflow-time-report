@@ -34,7 +34,9 @@ echo "### Repository Total"
 echo "__$(humanize $repo_total)__"
 
 echo '## Message'
-echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間（3600分）__ 実行されてしまいます。'
-echo '- _timeout-minutes_ を指定たジョブ指定した時間で終了します。'
+echo '### timeout-minutes'
+echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間(3600分)__ 実行されます。'
+echo '- _timeout-minutes_ を指定したジョブは最大でも指定した時間で終了します。'
+echo '- _timeout-minutes_ は実行時間に対するセーフティネットとして働きます。'
 echo '- ワークフローを記載する際 _jobs_ には _timeout-minutes_ を指定してください。'
 exit 0
