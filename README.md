@@ -37,13 +37,8 @@ jobs:
 
 ## Input
 
-```yaml
-  label:
-    description: Attached Label
-    required: false
-    default: workflow-time-report
-```
+`label`
 
 ## Output
 
-N/A
+- N/A
