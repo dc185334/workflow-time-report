@@ -6,6 +6,10 @@ inputs:
     required: false
     default: workflow-time-report
 
+env:
+  TZ: Asia/Tokyo
+  GH_TOKEN: ${{ github.token }}
+
 runs:
   using: composite
   steps:
@@ -13,9 +17,6 @@ runs:
       id: current_time
       shell: bash
       run: echo "::set-output name=stdout::$(date '+%Y-%m-%d %H:%M:%S')"
-      env:
-        TZ: Asia/Tokyo
-        GH_TOKEN: ${{ github.token }}
 
     - name: Create markdown
       id: markdown
@@ -24,8 +25,6 @@ runs:
         data=$(bash report.sh "${{ github.repository }}")
         data="${data//$'\n'/\\n}"
         echo "::set-output name=stdout::$data"
-      env:
-        GH_TOKEN: ${{ github.token }}
 
     - name: Create attached label
       shell: bash
@@ -37,5 +36,3 @@ runs:
       run: |
         body="${{ steps.markdown.outputs.stdout }}"
         gh issue create -R ${{ github.repository }} --label ${{ inputs.label }} --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
-      env:
-        GH_TOKEN: ${{ github.token }}
