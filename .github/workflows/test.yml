@@ -3,6 +3,8 @@ name: Workflow Time Report
 on:
   push
 
+  workflow_dispatch:
+
 jobs:
   reporting:
     runs-on: ubuntu-latest

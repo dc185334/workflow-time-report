@@ -2,26 +2,27 @@
 
 利用元 Repository の Workflows Billable Time レポートを ISSUE に起票します。
 
-Repository Admin は Workflows Billable Time が過剰に肥大化していないことを確認します。
+Repository Admin は Workflows Billable Time が過剰ではないことを確認します。
 
 ## Usage
 
-任意の Workflow ファイルで任意の `jobs.<job-name>.steps.uses` に指定します。
+任意の `jobs.<job-name>.steps.uses` で下記を指定します。
 
 ```yaml
-      - uses: MichinaoShimizu/workflow-time-report@main
+- uses: MichinaoShimizu/workflow-time-report@main
+
 ```
 
 ### Example
 
-毎週月曜日から火曜日の朝10にISSUEを作成する場合下記の通り指定します。
+下記を記載した `.github/workflows/weekly_report.yml` を作成すると毎週月曜10時に実行されます。
 
 ```yaml
-name: Workflow Time Report
+name: Weekly Report Tasks
 
 on:
   schedule:
-    - cron: '0 1 * * 1-5'
+    - cron: '0 1 * * 1'
 
   workflow_dispatch:
 
@@ -34,12 +35,15 @@ jobs:
       - uses: MichinaoShimizu/workflow-time-report@main
 ```
 
-## I/F
+## Input
 
-### Input
+```yaml
+  label:
+    description: Attached Label
+    required: false
+    default: workflow-time-report
+```
 
-
-
-### Output
+## Output
 
 N/A
