@@ -14,27 +14,22 @@ humanize() {
 }
 
 repo_name=$1
-
 declare repo_total=0
 
 echo '## Billable Time'
-
-echo '### Workflows'
-
-echo '| id | name/source | state | billable time | badge |'
-echo '| -- | ----------- | ----- | ------------- | ----- |'
-
-while IFS="|" read -r id name html_url state badge_url; do
+echo '| badge | id | name/source | state | billable time total |'
+echo '| ----- | -- | ----------- | ----- | ------------------- |'
+while IFS="|" read -r id name html_url state badge_url path; do
     total=0
     for ms in $(gh api "/repos/${repo_name}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
     do
         total=$(( total + ms ))
         repo_total=$(( repo_total + ms ))
     done
-    echo "| $id | [$name]($html_url) | $state | $(humanize $total) | [![$name]($badge_url)]() |"
-done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)"')
+    file_name=${path##*/}
+    echo "| [![$name]($badge_url)](/$repo_name/actions/workflows/$file_name) | $id | [$name]($html_url) | $state | $(humanize $total) |"
+done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(path)"')
 
-echo "### Total"
+echo "## Total Billable Time"
 echo "__$(humanize $repo_total)__"
-
 exit 0
