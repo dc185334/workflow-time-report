@@ -1,5 +1,11 @@
 name: Workflow Time Report
 decription: Workflow Time Report
+inputs:
+  label:
+    description: Attached Label
+    required: false
+    default: workflow-time-report
+
 runs:
   using: composite
   steps:
@@ -15,16 +21,21 @@ runs:
       id: markdown
       shell: bash
       run: |
-        data=$(bash report.sh ${{ github.repository }})
+        data=$(bash report.sh "${{ github.repository }}")
         data="${data//$'\n'/\\n}"
         echo "::set-output name=stdout::$data"
       env:
         GH_TOKEN: ${{ github.token }}
 
+    - name: Create attached label
+      shell: bash
+      run: |
+        gh label create "${{ inputs.label }}" -R ${{ github.repository }} --description "workflow time report" --color E99695
+
     - name: Create report
       shell: bash
       run: |
         body="${{ steps.markdown.outputs.stdout }}"
-        gh issue create -R ${{ github.repository }} --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
+        gh issue create -R ${{ github.repository }} --label ${{ inputs.label }} --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
       env:
         GH_TOKEN: ${{ github.token }}
