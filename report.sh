@@ -17,7 +17,7 @@ repo_name=$1
 declare repo_total=0
 
 echo '## Workflows'
-echo '${repo_name}における、今月のワークフロー別実行時間です。'
+echo "${repo_name} における今月の Workflow 別総実行時間です。"
 echo '| workflow(status) | workflow(source) | id | state | billable time |'
 echo '| ---------------- | ---------------- | -- | ----- | ------------- |'
 while IFS="|" read -r id name html_url state badge_url path; do
@@ -31,12 +31,12 @@ while IFS="|" read -r id name html_url state badge_url path; do
 done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
 
 echo "## Repository Total"
-echo '${repo_name}における、今月の総ワークフロー実行時間です。'
+echo "${repo_name} における今月の総実行時間です。"
 echo "__$(humanize $repo_total)__"
 
 echo '## Message'
-echo '- Enterprise全体で月 __50000分__ が現在の上限です。'
-echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間(3600分)__ 実行されます。'
+echo '- 全体で __50000分/月__ が現在の上限です。'
+echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間(3600分)__ 実行される可能性があります。'
 echo '- _timeout-minutes_ を指定したジョブは最大でも指定した時間で終了します。'
-echo '- ワークフローを記載する際 _jobs_ には _timeout-minutes_ を指定してください。'
+echo '- あらゆる _jobs_ には _timeout-minutes_ を指定してください。'
 exit 0
