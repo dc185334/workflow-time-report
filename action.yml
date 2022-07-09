@@ -15,7 +15,7 @@ runs:
       id: markdown
       shell: bash
       run: |
-        data=$(bash report.sh)
+        data=$(bash report.sh ${{ github.repository }})
         echo "::set-output name=stdout::${data//$'\n'/'%0A'}"
       env:
         GH_TOKEN: ${{ github.token }}

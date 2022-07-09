@@ -13,8 +13,10 @@ humanize() {
     printf "%s m" $((millsec / 60000))
 }
 
-repo_name='MichinaoShimizu/yesterday-merged-prs'
+repo_name=$1
+
 declare repo_total=0
+
 echo '## Workflow Billable Time'
 echo '| badge | id | name | source | state | billable time |'
 echo '| ----- | -- | ---- | ------ | ----- | ------------- |'
