@@ -15,11 +15,8 @@ runs:
       id: markdown
       shell: bash
       run: |
-        table=$(bash report.sh)
-        table="${table//'%'/'%25'}"
-        table="${table//$'\n'/'%0A'}"
-        table="${table//$'\r'/'%0D'}"
-        echo "::set-output name=stdout::$table"
+        data=$(bash report.sh)
+        echo "::set-output name=stdout::${data//$'\n'/'%0A'}"
 
     - name: Create report
       shell: bash
