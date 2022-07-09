@@ -34,8 +34,7 @@ echo "### Repository Total"
 echo "__$(humanize $repo_total)__"
 
 echo '## Message'
-echo '### `timeput-minutes` は必須'
-echo '`timeout-minutes` を指定しないジョブは最大 __6時間（3600分）__ 実行されてしまいます。'
-echo '`timeout-minutes` を指定たジョブ指定した時間で終了します。'
-echo 'あらゆるワークフローを記載する際 `jobs` には `timeout-minutes` を指定してください。'
+echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間（3600分）__ 実行されてしまいます。'
+echo '- _timeout-minutes_ を指定たジョブ指定した時間で終了します。'
+echo '- ワークフローを記載する際 jobs には _timeout-minutes_ を指定してください。'
 exit 0
