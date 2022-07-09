@@ -16,8 +16,7 @@ humanize() {
 repo_name=$1
 declare repo_total=0
 
-echo '## Billable Time'
-echo '### Workflows'
+echo '## Workflows'
 echo '| workflow(status) | id | workflow(source) | state | billable time |'
 echo '| ---------------- | -- | ---------------- | ----- | ------------- |'
 while IFS="|" read -r id name html_url state badge_url path; do
@@ -30,13 +29,12 @@ while IFS="|" read -r id name html_url state badge_url path; do
     echo "| [![$name]($badge_url)](/$repo_name/actions/workflows/${path##*/}) | $id | [$name]($html_url) | $state | $(humanize $total) |"
 done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
 
-echo "### Repository Total"
+echo "## Repository Total"
 echo "__$(humanize $repo_total)__"
 
 echo '## Message'
 echo '### timeout-minutes'
 echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間(3600分)__ 実行されます。'
 echo '- _timeout-minutes_ を指定したジョブは最大でも指定した時間で終了します。'
-echo '- _timeout-minutes_ は実行時間に対するセーフティネットとして働きます。'
 echo '- ワークフローを記載する際 _jobs_ には _timeout-minutes_ を指定してください。'
 exit 0
