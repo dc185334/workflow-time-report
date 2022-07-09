@@ -17,9 +17,12 @@ repo_name=$1
 
 declare repo_total=0
 
-echo '## Workflow Billable Time'
-echo '| badge | id | name | source | state | billable time |'
-echo '| ----- | -- | ---- | ------ | ----- | ------------- |'
+echo '## Billable Time'
+
+echo '### Workflows'
+
+echo '| id | name/source | state | billable time | badge |'
+echo '| -- | ----------- | ----- | ------------- | ----- |'
 
 while IFS="|" read -r id name html_url state badge_url; do
     total=0
@@ -28,7 +31,7 @@ while IFS="|" read -r id name html_url state badge_url; do
         total=$(( total + ms ))
         repo_total=$(( repo_total + ms ))
     done
-    echo "| [![$name]($badge_url)]() | $id | $name | $html_url | $state | $(humanize $total) |"
+    echo "| $id | [$name]($html_url) | $state | $(humanize $total) | [![$name]($badge_url)]() |"
 done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)"')
 
 echo "### Total"
