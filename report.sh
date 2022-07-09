@@ -18,8 +18,9 @@ declare repo_total=0
 
 echo '## Workflows Billable Time'
 echo "今月のワークフロー別総実行時間"
-echo '| workflow id | status | name/source | state | billable time |'
-echo '| ----------- | ------ | ----------- | ----- | ------------- |'
+echo '| workflow id | status badge | name/source | state | total billable time |'
+echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
+
 while IFS="|" read -r id name html_url state badge_url path; do
     total=0
     for ms in $(gh api "/repos/${repo_name}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
@@ -37,5 +38,5 @@ echo '- Enterpriseプランでは __50000分/月__ が上限でそれ以上は�
 echo "### Total Billable Time"
 echo "__$(humanize $repo_total)__"
 
-echo "### TTActions"
+echo "### Report output source"
 echo "<https://github.com/MichinaoShimizu/workflow-time-report>"
