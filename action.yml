@@ -6,6 +6,7 @@ runs:
     - name: Get current time
       id: current_time
       shell: bash
+      timeout-minutes: 1
       run: echo "::set-output name=stdout::$(date '+%Y-%m-%d %H:%M:%S')"
       env:
         TZ: Asia/Tokyo
@@ -14,6 +15,7 @@ runs:
     - name: Create markdown
       id: markdown
       shell: bash
+      timeout-minutes: 3
       run: |
         data=$(bash report.sh ${{ github.repository }})
         data="${data//$'\n'/\\n}"
@@ -23,6 +25,7 @@ runs:
 
     - name: Create report
       shell: bash
+      timeout-minutes: 3
       run: |
         body="${{ steps.markdown.outputs.stdout }}"
         gh issue create -R ${{ github.repository }} --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"

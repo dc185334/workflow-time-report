@@ -38,5 +38,5 @@ echo '## Message'
 echo '- 全体で __50000分/月__ が現在の上限です。'
 echo '- _timeout-minutes_ を指定しないジョブは最大 __6時間(3600分)__ 実行される可能性があります。'
 echo '- _timeout-minutes_ を指定したジョブは最大でも指定した時間で終了します。'
-echo '- あらゆる _jobs_ には _timeout-minutes_ を指定してください。'
+echo '- _jobs_ あるいは _steps_ に _timeout-minutes_ を指定しましょう。'
 exit 0
