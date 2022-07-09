@@ -30,10 +30,12 @@ while IFS="|" read -r id name html_url state badge_url path; do
     echo "| $id | [![$name]($badge_url)](/$repo_name/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $total) |"
 done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
 
-echo '- Enterpriseプランでは __50000分/月__ が上限で、それ以上は追加購入が必要です。'
-echo '- _timeout-minutes_ を指定しないジョブは最大 __3600分__ 中断されません。'
-echo '- _timeout-minutes_ を指定したジョブは指定した時間で中断されます。'
-echo '- _jobs_ あるいは _steps_ に _timeout-minutes_ を指定してください。'
+echo '- [jobs.<job_id>.timeout-minutes](https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes)を指定してください。'
+echo '- [jobs.<job_id>.timeout-minutes](https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes)を指定していないジョブは最大 __360分__ 中断されません。'
+echo '- Enterpriseプランでは __50000分/月__ が上限でそれ以上は追加購入が必要です。'
 
 echo "### Total Billable Time"
 echo "__$(humanize $repo_total)__"
+
+echo "### TTActions"
+echo "<https://github.com/MichinaoShimizu/workflow-time-report>"
