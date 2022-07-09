@@ -27,7 +27,7 @@ while IFS="|" read -r id name html_url state badge_url path; do
         repo_total=$(( repo_total + ms ))
     done
     echo "| [![$name]($badge_url)](/$repo_name/actions/workflows/${path##*/}) | $id | [$name]($html_url) | $state | $(humanize $total) |"
-done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(path)"')
+done < <(gh api /repos/$repo_name/actions/workflows --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
 
 echo "## Total Billable Time"
 echo "__$(humanize $repo_total)__"
