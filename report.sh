@@ -34,4 +34,4 @@ echo "__TOTAL__ : __$(humanize $repo_total)__"
 echo ''
 echo '- [jobs.<job_id>.timeout-minutes](https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes)を指定してください。'
 echo '- [jobs.<job_id>.timeout-minutes](https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idtimeout-minutes)を指定していないジョブは最大 __360分__ 中断されません。'
-echo '- Enterpriseプランでは __50000分/月__ が上限でそれ以上は追加購入が必要です。'
+echo '- Enterpriseプランでは __50000分/月__ が上限です（参考：[About billing for GitHub Actions](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions)）'
