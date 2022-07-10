@@ -3,12 +3,14 @@ decription: Workflow Time Report
 inputs:
   label:
     description: Attached Label
+    type: string
     required: false
     default: 'workflow-time-report'
   create-issue:
     description: Whether to create ISSUE and LABEL
+    type: boolean
     required: false
-    default: 'true'
+    default: true
 outputs:
   markdown:
     description: Markdown Report
@@ -36,7 +38,7 @@ runs:
 
     - name: Create ISSUE and LABEL
       shell: bash
-      if: ${{ inputs.create-issue == 'true' }}
+      if: ${{ inputs.create-issue }}
       run: |
         gh label create "${{ inputs.label }}" -R ${{ github.repository }} --description "workflow time report" --color E99695 -f
         body="${{ steps.markdown.outputs.stdout }}"
