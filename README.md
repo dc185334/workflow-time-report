@@ -6,7 +6,8 @@
 
 ```yaml
 - uses: MichinaoShimizu/workflow-time-report@main
-
+  with:
+    create-issue: 'true'
 ```
 
 ## Example
@@ -27,4 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: MichinaoShimizu/workflow-time-report@main
+        with:
+          create-issue: 'true'
 ```
