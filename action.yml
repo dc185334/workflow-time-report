@@ -34,8 +34,9 @@ runs:
       shell: bash
       if: ${{ inputs.create-issue == 'true' }}
       run: |
-        gh label create "${{ inputs.label }}" -R ${{ github.repository }} --description "workflow time report" --color E99695 -f
+        label_name='workflow-time-report'
+        gh label create "$label_name" -R ${{ github.repository }} --description "workflow time report" --color E99695 -f
         body="${{ steps.markdown.outputs.stdout }}"
-        gh issue create -R ${{ github.repository }} --label 'workflow-time-report' --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
+        gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
       env:
         GH_TOKEN: ${{ github.token }}
