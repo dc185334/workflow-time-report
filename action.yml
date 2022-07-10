@@ -4,8 +4,15 @@ inputs:
   label:
     description: Attached Label
     required: false
-    default: workflow-time-report
-
+    default: 'workflow-time-report'
+  create-issue:
+    description: Whether to create ISSUE and LABEL
+    required: false
+    default: 'true'
+outputs:
+  markdown:
+    description: Markdown Report
+    value: ${{ steps.markdown.outputs.stdout }}
 runs:
   using: composite
   steps:
@@ -27,15 +34,11 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - name: Create attached label
+    - name: Create ISSUE and LABEL
       shell: bash
-      run: gh label create "${{ inputs.label }}" -R ${{ github.repository }} --description "workflow time report" --color E99695 -f
-      env:
-        GH_TOKEN: ${{ github.token }}
-
-    - name: Create report to ISSUE
-      shell: bash
+      if: ${{ inputs.create-issue == 'true' }}
       run: |
+        gh label create "${{ inputs.label }}" -R ${{ github.repository }} --description "workflow time report" --color E99695 -f
         body="${{ steps.markdown.outputs.stdout }}"
         gh issue create -R ${{ github.repository }} --label ${{ inputs.label }} --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
       env:
