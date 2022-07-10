@@ -46,4 +46,4 @@ runs:
       shell: bash
       run: |
         wf_files=$(ls .github/workflows/*.yml)
-        echo $wf_files | python -c "import yaml; import json; import sys; print(json.dumps(yaml.load(sys.stdin, Loader=yaml.FullLoader), indent=2))"
+        echo $wf_files | xargs python -c "import yaml; import json; import sys; print(json.dumps(yaml.load(sys.stdin, Loader=yaml.FullLoader), indent=2))"
