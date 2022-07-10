@@ -45,5 +45,12 @@ runs:
     - name: Create PR for timeout-minutes
       shell: bash
       run: |
-        wf_files=$(ls .github/workflows/*.yml)
-        echo $wf_files | xargs python -c "import yaml; import json; import sys; print(json.dumps(yaml.load(sys.stdin, Loader=yaml.FullLoader), indent=2))"
+        DIRF=$(ls .github/workflows/*.yml)
+        IFS=$'\n'
+        for FILE in `ls "$DIRF"`
+        do
+          if [ -f "$FILE" ]; then
+            json=$(cat $FILE | python -c "import yaml; import json; import sys; print(json.dumps(yaml.load(sys.stdin, Loader=yaml.FullLoader), indent=2))" | jq .)
+            echo $json
+          fi
+        done
