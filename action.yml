@@ -9,6 +9,7 @@ outputs:
   markdown:
     description: Markdown Report
     value: ${{ steps.markdown.outputs.stdout }}
+
 runs:
   using: composite
   steps:
@@ -35,7 +36,7 @@ runs:
       if: ${{ inputs.create-issue == 'true' }}
       run: |
         label_name='workflow-time-report'
-        gh label create "$label_name" -R ${{ github.repository }} --description "workflow time report" --color E99695 -f
+        gh label create "$label_name" -R ${{ github.repository }} --description "workflow time report" --color 000000 -f
         body="${{ steps.markdown.outputs.stdout }}"
         gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
       env:
