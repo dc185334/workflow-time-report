@@ -21,17 +21,17 @@ runs:
         TZ: Asia/Tokyo
         GH_TOKEN: ${{ github.token }}
 
-    - name: Create markdown
+    - name: Generate markdown text
       id: markdown
       shell: bash
       run: |
-        data=$(./report.sh "${{ github.repository }}")
+        data=$(bash $GITHUB_ACTION_PATH/report.sh "${{ github.repository }}")
         data="${data//$'\n'/\\n}"
         echo "::set-output name=stdout::$data"
       env:
         GH_TOKEN: ${{ github.token }}
 
-    - name: Create ISSUE and LABEL
+    - name: Create issue and label
       shell: bash
       if: ${{ inputs.create-issue == 'true' }}
       run: |
