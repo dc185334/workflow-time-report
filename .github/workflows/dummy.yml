@@ -1,0 +1,24 @@
+name: Test
+
+on:
+  push
+
+jobs:
+  hoge1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo 1
+
+  hoge2:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo 1
+
+  hoge3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - run: |
+          echo 1
