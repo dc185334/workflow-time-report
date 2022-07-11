@@ -28,4 +28,4 @@ while IFS="|" read -r id name html_url state badge_url path; do
     echo "| $id | [![$name]($badge_url)](/$TARGET_REPOSITORY/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $total) |"
 done < <(gh api "/repos/$TARGET_REPOSITORY/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
 
-echo "| TOTAL | | | | __$(humanize $repo_total)__ |"
+echo "| | | | | __$(humanize $repo_total)__ |"
