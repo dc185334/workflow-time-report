@@ -4,6 +4,8 @@
 
 Github Action that outputs `Billable Time` for each Workflow to ISSUE.
 
+![issue.png](issue.png)
+
 ## Usage
 
 ```yaml
@@ -11,8 +13,6 @@ Github Action that outputs `Billable Time` for each Workflow to ISSUE.
 ```
 
 ## Example
-
-If you create a workflow like the one below,
 
 ```yaml
 name: Weekly Report Tasks
@@ -31,10 +31,3 @@ jobs:
       - uses: actions/checkout@v3
       - uses: MichinaoShimizu/workflow-time-report@v2
 ```
-
-The following ISSUE will be created.
-
-| workflow id | status badge | name/source | state | total billable time |
-| ----------- | ------------ | ----------- | ----- | ------------------- |
-| 29913858 | [![Test](https://github.com/MichinaoShimizu/workflow-time-report/workflows/Test/badge.svg)](/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml) | [Test](https://github.com/MichinaoShimizu/workflow-time-report/blob/main/.github/workflows/test.yml) | active | 57 m |
-| | | | | __57 m__ |
