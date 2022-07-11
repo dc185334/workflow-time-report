@@ -36,7 +36,5 @@ The following ISSUE will be created.
 
 | workflow id | status badge | name/source | state | total billable time |
 | ----------- | ------------ | ----------- | ----- | ------------------- |
-| 29963666 | [![Test](https://github.com/MichinaoShimizu/workflow-time-report/workflows/Test/badge.svg)](/MichinaoShimizu/workflow-time-report/actions/workflows/dummy.yml) | [Test](https://github.com/MichinaoShimizu/workflow-time-report/blob/main/.github/workflows/dummy.yml) | active | 10 m |
-| 29913858 | [![Test](https://github.com/MichinaoShimizu/workflow-time-report/workflows/Test/badge.svg)](/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml) | [Test](https://github.com/MichinaoShimizu/workflow-time-report/blob/main/.github/workflows/test.yml) | active | 56 m |
-
-__TOTAL__ : __66 m__
+| 29913858 | [![Test](https://github.com/MichinaoShimizu/workflow-time-report/workflows/Test/badge.svg)](/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml) | [Test](https://github.com/MichinaoShimizu/workflow-time-report/blob/main/.github/workflows/test.yml) | active | 57 m |
+| | | | | __57 m__ |
