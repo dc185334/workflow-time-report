@@ -1,6 +1,8 @@
 # Workflow Time Report
 
-利用元 Repository の Workflows Billable Time レポートを ISSUE に起票します。
+[![Test](https://github.com/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml/badge.svg)](https://github.com/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml)
+
+Github Action that outputs Billable Time for each Workflow to ISSUE.
 
 ## Usage
 
@@ -10,6 +12,8 @@
 
 ## Example
 
+If you create a workflow like the one below,
+
 ```yaml
 name: Weekly Report Tasks
 
@@ -17,7 +21,7 @@ on:
   schedule:
     - cron: '0 1 * * 1'
 
-  workflow_dispatch:
+  workflow_dispatch: ~
 
 jobs:
   reporting:
