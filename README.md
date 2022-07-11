@@ -2,7 +2,7 @@
 
 [![Test](https://github.com/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml/badge.svg)](https://github.com/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml)
 
-Github Action that outputs Billable Time for each Workflow to ISSUE.
+Github Action that outputs `Billable Time` for each Workflow to ISSUE.
 
 ## Usage
 

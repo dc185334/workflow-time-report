@@ -1,5 +1,6 @@
 name: Workflow Time Report
-decription: Workflow Time Report
+author: MichinaoShimizu
+decription: Github Action that outputs Billable Time for each Workflow to ISSUE.
 outputs:
   markdown:
     description: Markdown Report
@@ -28,3 +29,7 @@ runs:
         gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e $body)" --title "Workflow Time Report"
       env:
         GH_TOKEN: ${{ github.token }}
+
+branding:
+  icon: "sun"
+  color: "orange"
