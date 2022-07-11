@@ -1,10 +1,5 @@
 name: Workflow Time Report
 decription: Workflow Time Report
-inputs:
-  create-issue:
-    description: Whether to create ISSUE and LABEL
-    required: true
-    default: 'true'
 outputs:
   markdown:
     description: Markdown Report
@@ -25,11 +20,12 @@ runs:
       id: markdown
       shell: bash
       run: |
-        data=$(bash $GITHUB_ACTION_PATH/report.sh "${{ github.repository }}")
+        data=$(bash $GITHUB_ACTION_PATH/report.sh)
         data="${data//$'\n'/\\n}"
         echo "::set-output name=stdout::$data"
       env:
         GH_TOKEN: ${{ github.token }}
+        TARGET_REPOSITORY: ${{ github.repository }}
 
     - name: Create issue and label
       shell: bash
@@ -41,17 +37,3 @@ runs:
         gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e $body)" --title "Workflow Time Report（${{ steps.current_time.outputs.stdout }}）"
       env:
         GH_TOKEN: ${{ github.token }}
-
-    - name: Create PR for timeout-minutes
-      shell: bash
-      run: |
-        DIRF=$(ls .github/workflows/*.yml)
-        IFS=$'\n'
-        for FILE in `ls "$DIRF"`
-        do
-          FILEF="$DIRF$FILE"
-          if [ -f "$FILEF" ]; then
-            json=$(cat $FILEF | python -c "import yaml; import json; import sys; print(json.dumps(yaml.load(sys.stdin, Loader=yaml.FullLoader), indent=2))" | jq .)
-            echo $json
-          fi
-        done

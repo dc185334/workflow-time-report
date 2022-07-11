@@ -5,7 +5,7 @@
 ## Usage
 
 ```yaml
-- uses: MichinaoShimizu/workflow-time-report@main
+- uses: MichinaoShimizu/workflow-time-report@v2
 ```
 
 ## Example
@@ -25,5 +25,5 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - uses: MichinaoShimizu/workflow-time-report@main
+      - uses: MichinaoShimizu/workflow-time-report@v2
 ```
