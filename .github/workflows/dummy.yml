@@ -1,7 +1,7 @@
 name: Dummy
 
 on:
-  push
+  workflow_dispatch: ~
 
 jobs:
   reporting:
