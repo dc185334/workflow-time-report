@@ -7,25 +7,32 @@ humanize() {
     if (( millsec < 1000 )); then
         printf "%s ms" $millsec
     elif (( millsec < 60000 )); then
-        printf "%s s" $((millsec / 1000))
+        printf "%s ms (%s s)" $millsec $((millsec / 1000))
     else
-        printf "%s m" $((millsec / 60000))
+        printf "%s ms (%s m)" $millsec $((millsec / 60000))
     fi
 }
 
-declare repo_total=0
+get_workflows() {
+    gh api "/repos/$1/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"'
+}
 
-echo '| workflow id | status badge | name/source | state | total billable time |'
-echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
+get_workflow() {
+    gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms"
+}
 
-while IFS="|" read -r id name html_url state badge_url path; do
-    total=0
-    for ms in $(gh api "/repos/${TARGET_REPOSITORY}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
-    do
-        total=$(( total + ms ))
-        repo_total=$(( repo_total + ms ))
-    done
-    echo "| $id | [![$name]($badge_url)](/$TARGET_REPOSITORY/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $total) |"
-done < <(gh api "/repos/$TARGET_REPOSITORY/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
-
-echo "| | | | | __$(humanize $repo_total)__ |"
+main() {
+    local repo=$1
+    echo '| workflow id | status badge | name/source | state | total billable time |'
+    echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
+    while IFS="|" read -r id name html_url state badge_url path; do
+        local total_time=0
+        for workflow_time in $(get_workflow $repo)
+        do
+            total_time=$(( total_time + workflow_time ))
+        done
+        echo "| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $total_time) |"
+    done < <(get_workflows $repo)
+    echo "| | | | | __$(humanize $total_time)__ |"
+}
+main "$TARGET_REPOSITORY"
