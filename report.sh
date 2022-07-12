@@ -16,8 +16,6 @@ humanize() {
 # Summary Table
 print_table() {
     cat <<-EOS
-## Workflow Summary
-
 | workflow id | status badge | name/source | state | billable time |
 | ----------- | ------------ | ----------- | ----- | ------------- |
 $1
