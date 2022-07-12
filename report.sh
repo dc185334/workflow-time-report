@@ -16,18 +16,17 @@ humanize() {
 # Summary Table
 print_table() {
     cat <<-EOS
-## Summary
+## Workflow Summary
 
 | workflow id | status badge | name/source | state | billable time |
 | ----------- | ------------ | ----------- | ----- | ------------- |
-$1| | | | | $(humanize $2) |
+$1
 EOS
 }
 
 # Mermaid Pie Chart
 print_chart() {
     cat <<-EOS
-## Rate
 \\\`\\\`\\\`mermaid
     pie showData
         title Billable Time Per Workflow
@@ -47,7 +46,8 @@ main() {
         table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $workflow_time) |\n"
         chart_rows="$chart_rows\\\"$name\\\" : $workflow_time\n"
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
-    print_table "$table_rows" "$total_time"
+    $table_rows="$table_rows| | | | | $(humanize $total_time) |"
+    print_table "$table_rows"
     echo ''
     print_chart "$chart_rows"
 }
