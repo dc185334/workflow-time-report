@@ -4,7 +4,7 @@
 
 Create a ISSUE and reporting `Billable Time` of workflows.
 
-![issue.png](issue.png)
+![image.png](image.png)
 
 ## Usage
 
