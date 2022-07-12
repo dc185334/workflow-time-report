@@ -44,7 +44,7 @@ main() {
         table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $workflow_time) |\n"
         chart_rows="$chart_rows\\\"$name\\\" : $workflow_time\n"
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
-    table_rows="$table_rows| | | | | $(humanize $total_time) |"
+    table_rows="$table_rows| | | Total | | $(humanize $total_time) |"
     print_table "$table_rows"
     echo ''
     print_chart "$chart_rows"
