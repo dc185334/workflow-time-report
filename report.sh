@@ -15,21 +15,22 @@ millsec_humanize() {
     fi
 }
 
-print_table_header {
+print_table_header() {
     echo '| workflow id | status badge | name/source | state | total billable time |'
     echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
 }
 
-print_table_rows {
+print_table_rows() {
+    local repo_name=$1
     while IFS="|" read -r id name html_url state badge_url path; do
         local total=0
-        for ms in $(gh api "/repos/$1}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
+        for ms in $(gh api "/repos/$repo_name}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
         do
             total=$(( total + ms ))
             repo_total=$(( repo_total + ms ))
         done
-        echo "| $id | [![$name]($badge_url)](/$1/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(millsec_humanize $total) |"
-    done < <(gh api "/repos/$1/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
+        echo "| $id | [![$name]($badge_url)](/$repo_name/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(millsec_humanize $total) |"
+    done < <(gh api "/repos/$repo_name/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
     echo "| | | | | __$(millsec_humanize $repo_total)__ |"
 }
 
