@@ -25,7 +25,7 @@ main() {
         local workflow_time=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
         total_time=$(( total_time + workflow_time ))
         table="$table\n| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $workflow_time) |"
-        chart="$chart\n  \\"$name\\" : $workflow_time"
+        chart="$chart\n  \\\"$name\\\" : $workflow_time"
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
     table="$table\n| | | | | $(humanize $total_time) |"
     chart="$chart\n\\\`\\\`\\\`"
