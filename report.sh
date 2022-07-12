@@ -7,9 +7,9 @@ humanize() {
     if (( millsec < 1000 )); then
         printf "%s ms" $millsec
     elif (( millsec < 60000 )); then
-        printf "%s ms (%s s)" $millsec $((millsec / 1000))
+        printf "%s s (%s ms)" $((millsec / 1000)) $millsec
     else
-        printf "%s ms (%s m)" $millsec $((millsec / 60000))
+        printf "%s m (%s ms)" $((millsec / 60000)) $millsec
     fi
 }
 
@@ -33,6 +33,6 @@ main() {
         done
         echo "| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $total_time) |"
     done < <(get_workflows $repo)
-    echo "| | | | | __$(humanize $total_time)__ |"
+    echo "| | | | | $(humanize $total_time) |"
 }
 main "$TARGET_REPOSITORY"
