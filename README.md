@@ -9,7 +9,7 @@ Create a ISSUE and reporting `Billable Time` of workflows.
 ## Usage
 
 ```yaml
-- uses: MichinaoShimizu/workflow-time-report@v4
+- uses: MichinaoShimizu/workflow-time-report@v5
 ```
 
 ## Example
@@ -29,5 +29,5 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - uses: MichinaoShimizu/workflow-time-report@v4
+      - uses: MichinaoShimizu/workflow-time-report@v5
 ```

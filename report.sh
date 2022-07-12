@@ -16,13 +16,22 @@ humanize() {
 main() {
     local repo=$1
     local total_time=0
-    echo '| workflow id | status badge | name/source | state | total billable time |'
-    echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
+    local table='| workflow id | status badge | name/source | state | total billable time |'
+    local chart='```mermaid'
+    chart="$chart\npie showData"
+    chart="$chart\n  title Workflows Billable Time"
+    table="$table\n| ----------- | ------------ | ----------- | ----- | ------------------- |"
     while IFS="|" read -r id name html_url state badge_url path; do
         local workflow_time=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
         total_time=$(( total_time + workflow_time ))
-        echo "| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $workflow_time) |"
+        table="$table\n| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $workflow_time) |"
+        chart="$chart\n  \"$name\" : $workflow_time"
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
-    echo "| | | | | $(humanize $total_time) |"
+    table="$table\n| | | | | $(humanize $total_time) |"
+    chart="$chart\n"'```'
+    echo -e $table
+    echo ''
+    echo -e $chart
 }
+
 main "$TARGET_REPOSITORY"
