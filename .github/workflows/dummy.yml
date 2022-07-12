@@ -1,0 +1,12 @@
+name: Dummy
+
+on:
+  push
+
+jobs:
+  reporting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo 1
