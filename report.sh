@@ -17,7 +17,7 @@ main() {
     local repo=$1
     local total_time=0
     local table='| workflow id | status badge | name/source | state | total billable time |'
-    local chart='```mermaid'
+    local chart="\\\`\\\`\\\`mermaid"
     chart="$chart\npie showData"
     chart="$chart\n  title Workflows Billable Time"
     table="$table\n| ----------- | ------------ | ----------- | ----- | ------------------- |"
@@ -28,7 +28,7 @@ main() {
         chart="$chart\n  \"$name\" : $workflow_time"
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
     table="$table\n| | | | | $(humanize $total_time) |"
-    chart="$chart\n"'```'
+    chart="$chart\n\\\`\\\`\\\`"
     echo -e $table
     echo ''
     echo -e $chart
