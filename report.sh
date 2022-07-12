@@ -2,9 +2,7 @@
 
 set -puo pipefail
 
-declare repo_total=0
-
-millsec_humanize() {
+humanize() {
     local millsec=$1
     if (( millsec < 1000 )); then
         printf "%s ms" $millsec
@@ -15,29 +13,19 @@ millsec_humanize() {
     fi
 }
 
-get_workflows() {
-    gh api "/repos/$1/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"'
-}
+declare repo_total=0
 
-get_workflow_timing() {
-    local repo_name=
-    gh api "/repos/$1/actions/workflows/$id/timing" --jq ".billable[].total_ms"
-}
+echo '| workflow id | status badge | name/source | state | total billable time |'
+echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
 
-print_markdown_table() {
-    local repo_name=$1
-    echo '| workflow id | status badge | name/source | state | total billable time |'
-    echo '| ----------- | ------------ | ----------- | ----- | ------------------- |'
-    while IFS="|" read -r id name html_url state badge_url path; do
-        local total=0
-        for ms in $(get_workflow_timing $repo_name)
-        do
-            total=$(( total + ms ))
-            repo_total=$(( repo_total + ms ))
-        done
-        echo "| $id | [![$name]($badge_url)](/$repo_name/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(millsec_humanize $total) |"
-    done < <($(get_workflows $repo_name))
-    echo "| | | | | __$(millsec_humanize $repo_total)__ |"
-}
+while IFS="|" read -r id name html_url state badge_url path; do
+    total=0
+    for ms in $(gh api "/repos/${TARGET_REPOSITORY}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
+    do
+        total=$(( total + ms ))
+        repo_total=$(( repo_total + ms ))
+    done
+    echo "| $id | [![$name]($badge_url)](/$TARGET_REPOSITORY/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $total) |"
+done < <(gh api "/repos/$TARGET_REPOSITORY/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.html_url)|\(.state)|\(.badge_url)|\(.path)"')
 
-print_markdown_table "$TARGET_REPOSITORY"
+echo "| | | | | __$(humanize $repo_total)__ |"
