@@ -16,21 +16,21 @@ humanize() {
 # Summary Table
 print_table() {
     cat <<-EOS
-## Billable Time Per Workflow
+## Summary
 
 | workflow id | status badge | name/source | state | billable time |
 | ----------- | ------------ | ----------- | ----- | ------------- |
-$1
-| | | | | $(humanize $2) |
+$1| | | | | $(humanize $2) |
 EOS
 }
 
 # Mermaid Pie Chart
 print_chart() {
     cat <<-EOS
-## Billable Time Per Workflow (Rate)
+## Rate
 \\\`\\\`\\\`mermaid
     pie showData
+        title Billable Time Per Workflow
         $1
 \\\`\\\`\\\`
 EOS
