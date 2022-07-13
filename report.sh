@@ -4,9 +4,9 @@ set -puo pipefail
 
 humanize() {
     local millsec=$1
-    if (( millsec < 1000 )); then
+    if ((millsec < 1000)); then
         printf "%s ms" "$millsec"
-    elif (( millsec < 60000 )); then
+    elif ((millsec < 60000)); then
         printf "%s s (%s ms)" $((millsec / 1000)) "$millsec"
     else
         printf "%s m (%s ms)" $((millsec / 60000)) "$millsec"
@@ -42,7 +42,7 @@ main() {
     while IFS="|" read -r id name state badge_url path; do
         workflow_time=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
         if [ -n "$workflow_time" ]; then
-            total_time=$(( total_time + workflow_time ))
+            total_time=$((total_time + workflow_time))
             table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | $state | $(humanize $workflow_time) |\n"
             chart_rows="$chart_rows\\\"$id\\\" : $workflow_time\n"
         fi
