@@ -48,7 +48,7 @@ main() {
         fi
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)"')
 
-    table_rows="$table_rows| | Total | | $(humanize $total_time) |"
+    table_rows="$table_rows| Total | | | $(humanize $total_time) |"
     print_markdown "$table_rows" "$chart_rows"
 }
 
