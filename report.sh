@@ -43,7 +43,7 @@ main() {
         workflow_time=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
         if [ -n "$workflow_time" ]; then
             total_time=$(( total_time + workflow_time ))
-            table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | [$name]($html_url) | $state | $(humanize $workflow_time) |\n"
+            table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | $state | $(humanize $workflow_time) |\n"
             chart_rows="$chart_rows\\\"$id\\\" : $workflow_time\n"
         fi
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)"')
