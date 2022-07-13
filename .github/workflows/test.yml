@@ -1,9 +1,7 @@
 name: Test
 
 on:
-  push:
-
-  workflow_dispatch: ~
+  push
 
 jobs:
   reporting:
@@ -11,4 +9,4 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v3
-      - uses: ./
+      - uses: MichinaoShimizu/workflow-time-report@main
