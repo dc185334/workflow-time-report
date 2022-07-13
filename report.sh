@@ -19,8 +19,8 @@ print_markdown() {
 
 ### Summary
 
-| workflow id | status badge | name/source | state | billable time |
-| ----------- | ------------ | ----------- | ----- | ------------- |
+| workflow id | status badge | state | billable time |
+| ----------- | ------------ | ----- | ------------- |
 $1
 
 ### Percentage
