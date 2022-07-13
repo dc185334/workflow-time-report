@@ -1,6 +1,6 @@
 name: Workflow Time Report
 author: MichinaoShimizu
-description: Github Action that outputs Billable Time for each Workflow to ISSUE.
+description: Create a report on `Billable Time` in new ISSUE.
 outputs:
   markdown:
     description: Markdown Report
