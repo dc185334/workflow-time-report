@@ -14,22 +14,25 @@ humanize() {
 }
 
 print_markdown() {
+    local table_rows=$(echo -e $1)
+    local chart_rows=$(echo -e $2)
+
     cat <<-EOS
 ## Billable Time
 
-### Summary
+### Top List
 
 | workflow id | status badge | state | billable time |
 | ----------- | ------------ | ----- | ------------- |
-$1
+$table_rows
 
 ### Percentage
 
-\\\`\\\`\\\`mermaid
-    pie showData
-        title Billable Time Per Workflow
-        $2
-\\\`\\\`\\\`
+\`\`\`mermaid
+pie showData
+title Billable Time Per Workflow
+$chart_rows
+\`\`\`
 EOS
 }
 
@@ -41,15 +44,16 @@ main() {
 
     while IFS="|" read -r id name state badge_url path; do
         workflow_time=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
-        if [ -n "$workflow_time" ]; then
-            total_time=$((total_time + workflow_time))
-            table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | $state | $(humanize $workflow_time) |\n"
-            chart_rows="$chart_rows\\\"$id\\\" : $workflow_time\n"
+        if [ -z "$workflow_time" ]; then
+            continue
         fi
+        total_time=$((total_time + workflow_time))
+        table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | $state | $(humanize $workflow_time) |\n"
+        chart_rows="$chart_rows\"$id\" : $workflow_time\n"
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)"')
 
     table_rows="$table_rows| Total | | | $(humanize $total_time) |"
     print_markdown "$table_rows" "$chart_rows"
 }
 
-main "$TARGET_REPOSITORY"
+main "${TARGET_REPOSITORY:-MichinaoShimizu/workflow-time-report}"
