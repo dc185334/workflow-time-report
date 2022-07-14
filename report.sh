@@ -22,8 +22,8 @@ print_markdown() {
 
 ### Top List
 
-| workflow id | status badge | state | billable time |
-| ----------- | ------------ | ----- | ------------- |
+| # | workflow id | status badge | state | billable time |
+| - | ----------- | ------------ | ----- | ------------- |
 $table_rows
 
 ### Percentage
@@ -38,21 +38,37 @@ EOS
 
 main() {
     local repo=$1
-    local total_time=0
-    local table_rows=''
-    local chart_rows=''
+    local rows=()
 
-    while IFS="|" read -r id name state badge_url path; do
-        workflow_time=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
-        if [ -z "$workflow_time" ]; then
+    # get workflows list
+    while read -r fields; do
+        id="$(echo $fields | cut -d'|' -f1)"
+        btime=$(gh api "/repos/${repo}/actions/workflows/$id/timing" --jq ".billable[].total_ms")
+        if [ -z "$btime" ]; then
             continue
         fi
-        total_time=$((total_time + workflow_time))
-        table_rows="$table_rows| $id | [![$name]($badge_url)](/$repo/actions/workflows/${path##*/}) | $state | $(humanize $workflow_time) |\n"
-        chart_rows="$chart_rows\\\"$id\\\" : $workflow_time\n"
+        # add billable time of workflow
+        rows+=("$btime|$fields")
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)"')
 
-    table_rows="$table_rows| Total | | | $(humanize $total_time) |"
+    # sort by billable time
+    rows=( $( printf "%s\n" "${rows[@]}" | sort -nr -t'|' -k1) )
+
+    local table_rows=''
+    local chart_rows=''
+    local total=0
+    local i=1
+    for row in "${rows[@]}"; do
+        IFS='|'
+        read -r btime id name state badge_url path < <(echo "${row[@]}")
+        unset IFS
+        badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
+        table_rows="$table_rows| $i | $id | $badge | $state | $(humanize $btime) |\n"
+        chart_rows="$chart_rows\\\"$id\\\" : $btime\n"
+        total=$((total + btime))
+        i=$((i+1))
+    done
+    table_rows="$table_rows| - | - | - | - | $(humanize $total) |"
     print_markdown "$table_rows" "$chart_rows"
 }
 
