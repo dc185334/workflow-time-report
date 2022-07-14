@@ -22,8 +22,8 @@ print_markdown() {
 
 ### Top List
 
-| # | workflow id | state | badge | source | total ms | billable time |
-| - | ----------- | ----- | ----- | ------ | -------- | ------------- |
+| # | workflow id | badge | state | file | total ms | billable time |
+| - | ----------- | ----- | ----- | ---- | -------- | ------------- |
 $table_rows
 
 ### Percentage
@@ -63,12 +63,12 @@ main() {
         read -r btime id name state badge_url path html_url < <(echo "${row[@]}")
         unset IFS
         badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
-        table="$table| $i | $id | $state | $badge | [:pencil:]($html_url) | $btime ms | $(humanize $btime) |\n"
+        table="$table| $i | __$id__ | $badge | $state | [:pencil:]($html_url) | $btime ms | __$(humanize $btime)__ |\n"
         chart="$chart\\\"$id\\\" : $btime\n"
         total=$((total + btime))
         i=$((i+1))
     done
-    table="$table|||||| $total ms | $(humanize $total) |"
+    table="$table|||||| $total ms | __$(humanize $total)__ |"
     print_markdown "$table" "$chart"
 }
 
