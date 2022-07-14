@@ -7,9 +7,9 @@ humanize() {
     if ((millsec < 1000)); then
         printf "%s ms" "$millsec"
     elif ((millsec < 60000)); then
-        printf "%s s (%s ms)" $((millsec / 1000)) "$millsec"
+        printf "%s s" $((millsec / 1000))
     else
-        printf "%s m (%s ms)" $((millsec / 60000)) "$millsec"
+        printf "%s m" $((millsec / 60000))
     fi
 }
 
@@ -22,8 +22,8 @@ print_markdown() {
 
 ### Top List
 
-| # | workflow id | status badge | state | billable time |
-| - | ----------- | ------------ | ----- | ------------- |
+| # | workflow id | status badge | state | billable time | billable time(ms) |
+| - | ----------- | ------------ | ----- | ------------- | ----------------- |
 $table_rows
 
 ### Percentage
@@ -63,12 +63,12 @@ main() {
         read -r btime id name state badge_url path < <(echo "${row[@]}")
         unset IFS
         badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
-        table_rows="$table_rows| $i | $id | $badge | $state | $(humanize $btime) |\n"
+        table_rows="$table_rows| $i | $id | $badge | $state | $(humanize $btime) | $btime |\n"
         chart_rows="$chart_rows\\\"$id\\\" : $btime\n"
         total=$((total + btime))
         i=$((i+1))
     done
-    table_rows="$table_rows| - | - | - | - | $(humanize $total) |"
+    table_rows="$table_rows||||| $(humanize $total) | $total |"
     print_markdown "$table_rows" "$chart_rows"
 }
 
