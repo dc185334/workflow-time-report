@@ -63,12 +63,12 @@ main() {
         read -r btime id name state badge_url path html_url < <(echo "${row[@]}")
         unset IFS
         badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
-        table="$table| $i | __$id__ | $badge | $state | [:pencil:]($html_url) | $btime ms | __$(humanize $btime)__ |\n"
+        table="$table| $i | $id | $badge | $state | [:pencil:]($html_url) | $btime ms | $(humanize $btime) |\n"
         chart="$chart\\\"$id\\\" : $btime\n"
         total=$((total + btime))
         i=$((i+1))
     done
-    table="$table|||||| $total ms | __$(humanize $total)__ |"
+    table="$table|||||| $total ms | $(humanize $total) |"
     print_markdown "$table" "$chart"
 }
 
