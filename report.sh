@@ -28,11 +28,11 @@ $table_rows
 
 ### Percentage
 
-\`\`\`mermaid
+\\\`\\\`\\\`mermaid
 pie showData
 title Billable Time Per Workflow
 $chart_rows
-\`\`\`
+\\\`\\\`\\\`
 EOS
 }
 
