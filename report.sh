@@ -33,6 +33,11 @@ pie showData
 title Billable Time Per Workflow
 $chart_rows
 \\\`\\\`\\\`
+
+---
+
+Reported by : [MichinaoShimizu/workflow-time-report](https://github.com/MichinaoShimizu/workflow-time-report)
+
 EOS
 }
 
@@ -47,6 +52,7 @@ main() {
         if [ -z "$btime" ]; then
             continue
         fi
+        fields=${fields// /-}
         # add billable time of workflow
         rows+=("$btime|$fields")
     done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"')

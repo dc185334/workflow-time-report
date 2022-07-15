@@ -1,4 +1,4 @@
-name: Test
+name: Test Workflow
 
 on:
   push
@@ -9,4 +9,4 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v3
-      - uses: MichinaoShimizu/workflow-time-report@main
+      - uses: ./
