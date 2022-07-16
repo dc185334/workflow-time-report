@@ -49,14 +49,14 @@ main() {
 
   # get workflows list
   while read -r fields; do
-      id="$(echo "$fields" | cut -d'|' -f1)"
-      btime=$(gh api "/repos/$repo/actions/workflows/$id/timing" --jq ".billable[].total_ms")
-      if [ -z "$btime" ]; then
-          continue
-      fi
-      fields=${fields// /-}
-      # add billable time of workflow
-      rows+=("$btime|$fields")
+    id="$(echo "$fields" | cut -d'|' -f1)"
+    btime=$(gh api "/repos/$repo/actions/workflows/$id/timing" --jq ".billable[].total_ms")
+    if [ -z "$btime" ]; then
+      continue
+    fi
+    fields=${fields// /-}
+    # add billable time of workflow
+    rows+=("$btime|$fields")
   done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"')
 
   # sort by billable time
