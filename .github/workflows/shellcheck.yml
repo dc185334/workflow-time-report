@@ -11,13 +11,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: shellcheck
-        uses: reviewdog/action-shellcheck@v1
+      - uses: reviewdog/action-shfmt@v1
+      - uses: reviewdog/action-shellcheck@v1
         with:
-          github_token: ${{ github.token }}
-          reporter: "github-pr-check"
+          reporter: "github-pr-review"
           level: "warning"
-          path: "."
-          pattern: "*.sh"
           fail_on_error: "true"
           exclude: "./.git/*"
