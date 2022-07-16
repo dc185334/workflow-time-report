@@ -20,6 +20,10 @@ runs:
         GH_TOKEN: ${{ github.token }}
         TARGET_REPOSITORY: ${{ github.repository }}
 
+    - name: Output to job summary
+      shell: bash
+      run: echo -e "${{ steps.markdown.outputs.stdout }}" >> $GITHUB_STEP_SUMMARY
+
     - name: Create issue and label
       shell: bash
       run: |
@@ -29,6 +33,7 @@ runs:
         gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e $body)" --title "Workflow Time Report"
       env:
         GH_TOKEN: ${{ github.token }}
+
 
 branding:
   icon: "sun"
