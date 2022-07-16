@@ -10,18 +10,15 @@ jobs:
   shellcheck:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: shellcheck
-      uses: reviewdog/action-shellcheck@v1
-      with:
-        github_token: ${{ github.token }}
-        reporter: "github-pr-review"
-        level: "warning"
-        path: "." # Optional.
-        pattern: "*.sh" # Optional.
-        fail_on_error: "true"
-        exclude: "./.git/*" # Optional.
-        check_all_files_with_shebangs: "false"
+      - uses: actions/checkout@v3
+      - name: shellcheck
+        uses: reviewdog/action-shellcheck@v1
+        with:
+          github_token: ${{ github.token }}
+          reporter: "github-pr-review"
+          level: "warning"
+          path: "." # Optional.
+          pattern: "*.sh" # Optional.
+          fail_on_error: "true"
+          exclude: "./.git/*" # Optional.
+          check_all_files_with_shebangs: "false"
