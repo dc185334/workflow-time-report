@@ -60,7 +60,7 @@ main() {
   done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"')
 
   # sort by billable time
-  rows=( $( printf "%s\n" "${rows[@]}" | sort -nr -t'|' -k1) )
+  rows=($(printf "%s\n" "${rows[@]}" | sort -nr -t'|' -k1))
 
   local table=''
   local chart=''
