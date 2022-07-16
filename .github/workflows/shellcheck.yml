@@ -19,7 +19,7 @@ jobs:
         git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} \
           --diff-filter=AM \
           --name-only -- '*.sh' | while read script ; do \
-              shellcheck ${EXCLUDE_OPTS:+-e ${EXCLUDE_OPTS}} $script || \
+              shellcheck $script || \
               touch error.$$ ; \
             done
         test ! -e error.$$
