@@ -9,7 +9,7 @@ humanize() {
   elif ((millsec < 60000)); then
     printf "%s s" $((millsec / 1000))
   else
-      printf "%s m" $((millsec / 60000))
+    printf "%s m" $((millsec / 60000))
   fi
 }
 
