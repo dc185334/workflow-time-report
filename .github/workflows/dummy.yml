@@ -1,11 +1,11 @@
 name: Dummy Workflow
 
 on:
-  workflow_dispatch: ~
+  workflow_dispatch:
 
 jobs:
   reporting:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v3
