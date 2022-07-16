@@ -17,8 +17,7 @@ jobs:
           github_token: ${{ github.token }}
           reporter: "github-pr-review"
           level: "warning"
-          path: "." # Optional.
-          pattern: "*.sh" # Optional.
+          path: "."
+          pattern: "*.sh"
           fail_on_error: "true"
-          exclude: "./.git/*" # Optional.
-          check_all_files_with_shebangs: "false"
+          exclude: "./.git/*"
