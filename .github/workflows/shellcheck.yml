@@ -14,5 +14,12 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Check scripts with shellcheck
-      run: shellcheck
+    - name: shellcheck
+      uses: reviewdog/action-shellcheck@v1
+      with:
+        github_token: ${{ github.token }}
+        reporter: github-pr-review # Change reporter.
+        path: "." # Optional.
+        pattern: "*.sh" # Optional.
+        exclude: "./.git/*" # Optional.
+        check_all_files_with_shebangs: "false"
