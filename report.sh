@@ -37,7 +37,6 @@ $chart_rows
 ---
 
 Reported by : [MichinaoShimizu/workflow-time-report](https://github.com/MichinaoShimizu/workflow-time-report)
-
 EOS
 }
 

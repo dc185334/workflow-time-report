@@ -2,12 +2,6 @@ name: Test Workflow
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-    paths:
-      - "action.yml"
-      - "**.sh"
 
 jobs:
   test:
