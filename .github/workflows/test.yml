@@ -1,7 +1,13 @@
 name: Test Workflow
 
 on:
-  push
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths:
+      - "action.yml"
+      - "**.sh"
 
 jobs:
   reporting:
