@@ -28,7 +28,7 @@ runs:
       shell: bash
       run: |
         gh label create "${{ env.LABEL }}" -R ${{ github.repository }} --color 000000 -f
-        gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e ${{ steps.markdown.outputs.stdout }})" --title "${{ env.LABEL }}"
+        gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e "${{ steps.markdown.outputs.stdout }}")" --title "${{ env.LABEL }}"
       env:
         GH_TOKEN: ${{ github.token }}
         LABEL: workflow-time-report
