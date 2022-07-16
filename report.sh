@@ -14,8 +14,8 @@ humanize() {
 }
 
 print_markdown() {
-    local table_rows
-    local chart_rows
+  local table_rows
+  local chart_rows
 
   table_rows=$(echo -e "$1")
   chart_rows=$(echo -e "$2")
