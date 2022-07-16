@@ -15,11 +15,4 @@ jobs:
         fetch-depth: 0
 
     - name: Check scripts with shellcheck
-      run: |
-        git diff origin/${GITHUB_BASE_REF}..origin/${GITHUB_HEAD_REF} \
-          --diff-filter=AM \
-          --name-only -- '*.sh' | while read script ; do \
-              shellcheck $script || \
-              touch error.$$ ; \
-            done
-        test ! -e error.$$
+      run: shellcheck
