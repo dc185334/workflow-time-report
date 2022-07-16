@@ -5,11 +5,11 @@ set -puo pipefail
 humanize() {
   local millsec="$1"
   if ((millsec < 1000)); then
-      printf "%s ms" "$millsec"
+    printf "%s ms" "$millsec"
   elif ((millsec < 60000)); then
-      printf "%s s" $((millsec / 1000))
+    printf "%s s" $((millsec / 1000))
   else
-      printf "%s m" $((millsec / 60000))
+    printf "%s m" $((millsec / 60000))
   fi
 }
 
