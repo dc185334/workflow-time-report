@@ -27,8 +27,8 @@ runs:
     - name: Create issue and label
       shell: bash
       run: |
-        gh label create "${{ env.LABEL }}" -R ${{ github.repository }} --color 000000 -f
-        gh issue create -R ${{ github.repository }} --label "$label_name" --body "$(echo -e "${{ steps.markdown.outputs.stdout }}")" --title "${{ env.LABEL }}"
+        gh label create "workflow-time-report" -R ${{ github.repository }} --color 000000 -f
+        gh issue create -R ${{ github.repository }} --label "${{ env.LABEL }}" --body "$(echo -e "${{ steps.markdown.outputs.stdout }}")" --title "Workflow Time Report"
       env:
         GH_TOKEN: ${{ github.token }}
         LABEL: workflow-time-report
