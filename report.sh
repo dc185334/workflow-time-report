@@ -44,40 +44,40 @@ EOS
 }
 
 main() {
-    local repo=$1
-    local rows=()
+  local repo=$1
+  local rows=()
 
-    # get workflows list
-    while read -r fields; do
-        id="$(echo "$fields" | cut -d'|' -f1)"
-        btime=$(gh api "/repos/$repo/actions/workflows/$id/timing" --jq ".billable[].total_ms")
-        if [ -z "$btime" ]; then
-            continue
-        fi
-        fields=${fields// /-}
-        # add billable time of workflow
-        rows+=("$btime|$fields")
-    done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"')
+  # get workflows list
+  while read -r fields; do
+      id="$(echo "$fields" | cut -d'|' -f1)"
+      btime=$(gh api "/repos/$repo/actions/workflows/$id/timing" --jq ".billable[].total_ms")
+      if [ -z "$btime" ]; then
+          continue
+      fi
+      fields=${fields// /-}
+      # add billable time of workflow
+      rows+=("$btime|$fields")
+  done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"')
 
-    # sort by billable time
-    rows=( $( printf "%s\n" "${rows[@]}" | sort -nr -t'|' -k1) )
+  # sort by billable time
+  rows=( $( printf "%s\n" "${rows[@]}" | sort -nr -t'|' -k1) )
 
-    local table=''
-    local chart=''
-    local total=0
-    local i=1
-    for row in "${rows[@]}"; do
-        IFS='|'
-        read -r btime id name state badge_url path html_url < <(echo "${row[@]}")
-        unset IFS
-        badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
-        table="$table| $i | $id | $badge | $state | [:pencil:]($html_url) | $btime ms | $(humanize "$btime") |\n"
-        chart="$chart\\\"$id\\\" : $btime\n"
-        total=$((total + btime))
-        i=$((i+1))
-    done
-    table="$table|||||| $total ms | $(humanize "$total") |"
-    print_markdown "$table" "$chart"
+  local table=''
+  local chart=''
+  local total=0
+  local i=1
+  for row in "${rows[@]}"; do
+      IFS='|'
+      read -r btime id name state badge_url path html_url < <(echo "${row[@]}")
+      unset IFS
+      badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
+      table="$table| $i | $id | $badge | $state | [:pencil:]($html_url) | $btime ms | $(humanize "$btime") |\n"
+      chart="$chart\\\"$id\\\" : $btime\n"
+      total=$((total + btime))
+      i=$((i+1))
+  done
+  table="$table|||||| $total ms | $(humanize "$total") |"
+  print_markdown "$table" "$chart"
 }
 
 main "${TARGET_REPOSITORY:-MichinaoShimizu/workflow-time-report}"
