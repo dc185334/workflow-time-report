@@ -67,14 +67,14 @@ main() {
   local total=0
   local i=1
   for row in "${rows[@]}"; do
-      IFS='|'
-      read -r btime id name state badge_url path html_url < <(echo "${row[@]}")
-      unset IFS
-      badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
-      table="$table| $i | $id | $badge | $state | [:pencil:]($html_url) | $btime ms | $(humanize "$btime") |\n"
-      chart="$chart\\\"$id\\\" : $btime\n"
-      total=$((total + btime))
-      i=$((i+1))
+    IFS='|'
+    read -r btime id name state badge_url path html_url < <(echo "${row[@]}")
+    unset IFS
+    badge="[![$name]($badge_url)](/$repo/actions/workflows/${path##*/})"
+    table="$table| $i | $id | $badge | $state | [:pencil:]($html_url) | $btime ms | $(humanize "$btime") |\n"
+    chart="$chart\\\"$id\\\" : $btime\n"
+    total=$((total + btime))
+    i=$((i + 1))
   done
   table="$table|||||| $total ms | $(humanize "$total") |"
   print_markdown "$table" "$chart"
