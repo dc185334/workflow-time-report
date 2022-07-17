@@ -1,0 +1,26 @@
+name: Assign author
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+  issues:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  assign-pr:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
+    if: github.event_name == 'pull_request' && toJSON(github.event.pull_request.assignees) == '[]' && github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]'
+    steps:
+      - run: gh pr edit ${{ github.event.number }} --add-assignee "${{ github.actor }}"
+
+  assign-issue:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 3
+    if: github.event_name == 'issues' && toJSON(github.event.issue.assignees) == '[]' && github.actor != 'github-actions[bot]'
+    steps:
+      - run: gh issue edit ${{ github.event.number }} --add-assignee "${{ github.actor }}"
