@@ -10,5 +10,3 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./
-        id: report
-      - run: echo "${{ steps.report.outputs.markdown }}" >> $GITHUB_STEP_SUMMARY
