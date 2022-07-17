@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 3
     if: github.event_name == 'pull_request' && toJSON(github.event.pull_request.assignees) == '[]' && github.actor != 'dependabot[bot]' && github.actor != 'github-actions[bot]'
     steps:
-      - run: gh pr edit "${{ github.event.pull_request.number }}" --add-assignee "${{ github.actor }}"
+      - run: gh pr edit "${{ github.event.pull_request.number }}" -R "${{ github.repository }}" --add-assignee "${{ github.actor }}"
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -25,6 +25,6 @@ jobs:
     timeout-minutes: 3
     if: github.event_name == 'issues' && toJSON(github.event.issue.assignees) == '[]' && github.actor != 'github-actions[bot]'
     steps:
-      - run: gh issue edit "${{ github.event.issue.number }}" --add-assignee "${{ github.actor }}"
+      - run: gh issue edit "${{ github.event.issue.number }}" -R "${{ github.repository }}" --add-assignee "${{ github.actor }}"
         env:
           GH_TOKEN: ${{ github.token }}
