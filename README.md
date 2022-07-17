@@ -9,7 +9,7 @@ Github Actions that outputs the aggregated results related to Billable Time of a
 ## Usage
 
 ```yaml
-- uses: MichinaoShimizu/workflow-time-report@v6
+uses: MichinaoShimizu/workflow-time-report@v6
 ```
 
 ## Example
@@ -21,7 +21,7 @@ on:
   schedule:
     - cron: '0 1 * * 1'
 
-  workflow_dispatch: ~
+  workflow_dispatch: 
 
 jobs:
   reporting:
