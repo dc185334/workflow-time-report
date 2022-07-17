@@ -2,7 +2,7 @@
 
 [![Test](https://github.com/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml/badge.svg)](https://github.com/MichinaoShimizu/workflow-time-report/actions/workflows/test.yml)
 
-Create a report on `Billable Time` in new ISSUE.
+Github Actions that outputs the aggregated results related to Billable Time of all workflows executed by the repository to ISSUE and JobSummary during the current month.
 
 ![image.png](image.png)
 
