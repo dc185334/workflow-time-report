@@ -16,6 +16,7 @@ humanize() {
 print_markdown() {
   local table_rows
   local chart_rows
+  local history=$3
 
   table_rows=$(echo -e "$1")
   chart_rows=$(echo -e "$2")
@@ -36,6 +37,10 @@ pie showData
 title Billable Time Per Workflow
 $chart_rows
 \\\`\\\`\\\`
+
+### History
+
+$history
 
 ---
 
@@ -65,6 +70,8 @@ main() {
   local table=''
   local chart=''
   local total=0
+
+  # create summary table & pie chart rows
   local i=1
   for row in "${rows[@]}"; do
     IFS='|'
@@ -77,7 +84,13 @@ main() {
     i=$((i + 1))
   done
   table="$table|||||| $total ms | $(humanize "$total") |"
-  print_markdown "$table" "$chart"
+
+  # create history
+  local history=''
+  while read -r number; do
+    history="$history- #${number}\n"
+  done < <(gh issue list -s all -L10 -l workflow-time-report --json number --jq '.[].number')
+  print_markdown "$table" "$chart" "$history"
 }
 
 main "${TARGET_REPOSITORY:-MichinaoShimizu/workflow-time-report}"
