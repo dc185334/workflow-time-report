@@ -90,6 +90,7 @@ main() {
   while read -r number; do
     history="$history- #${number}\n"
   done < <(gh issue list -s all -L10 -l workflow-time-report --json number --jq '.[].number')
+
   print_markdown "$table" "$chart" "$history"
 }
 
