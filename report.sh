@@ -53,17 +53,26 @@ main() {
   local rows=()
 
   # get workflows list
+  owner_name="ncr-swt-retail"
+  repo_name="ccm-office"
   while read -r fields; do
     id="$(echo "$fields" | cut -d'|' -f1)"
-    btime=$(gh api "/repos/$repo/actions/workflows/$id/timing" --jq ".billable[].total_ms")
+    btime=$(gh api "/repos/$owner_name/$repo_name/actions/workflows/$id/timing" --jq ".billable[].total_ms")
     if [ -z "$btime" ]; then
       continue
     fi
     fields=${fields// /-}
     # add billable time of workflow
     rows+=("$btime|$fields")
-  done < <(gh api "/repos/$repo/actions/workflows" --jq '.workflows[] | "\(.id)|\(.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"')
 
+  done < <(gh api "/repos/$owner_name/$repo_name/actions/workflows" --jq '.workflows[] | "\(.id)^\(.name)^\(.state)^\(.badge_url)^\(.path)^\(.html_url)"' | tr "\|" "\%"  | tr "\^" "\|" | tr "%" "_")
+#
+#  # Fetch workflow data and process with jq
+#  workflow_data=$(gh api "/repos/$owner_name/$repo_name/actions/workflows")
+#  processed_data=$(echo "$workflow_data" | jq '.workflows[] | (.name)|\(.state)|\(.badge_url)|\(.path)|\(.html_url)"' | sed 's/|/\\|/g')
+#
+#  # Output the processed data
+#  echo "$processed_data"
   # sort by billable time
   rows=($(printf "%s\n" "${rows[@]}" | sort -nr -t'|' -k1))
 
