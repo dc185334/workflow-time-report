@@ -65,7 +65,7 @@ main() {
     # add billable time of workflow
     rows+=("$btime|$fields")
 
-  done < <(gh api "/repos/$owner_name/$repo_name/actions/workflows" --jq '.workflows[] | "\(.id)^\(.name)^\(.state)^\(.badge_url)^\(.path)^\(.html_url)"' | tr "\|" "\±"  | tr "\^" "\|" | tr "±" "_")
+  done < <(gh api "/repos/$owner_name/$repo_name/actions/workflows" --jq '.workflows[] | select(.created_at >= (now - "7d")) | "\(.id)^\(.name)^\(.state)^\(.badge_url)^\(.path)^\(.html_url)"' | tr "\|" "\±"  | tr "\^" "\|" | tr "±" "_")
 #
 #  # Fetch workflow data and process with jq
 #  workflow_data=$(gh api "/repos/$owner_name/$repo_name/actions/workflows")
